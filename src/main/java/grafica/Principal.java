@@ -1,29 +1,39 @@
 package grafica;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.DesktopPaneUI;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JDesktopPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JDesktopPane;
 
 public class Principal extends JFrame {
 
 	private JPanel contentPane;
 	private JDesktopPane desktopPane;
 	private MantenimientoCliente mantenimientoCliente; // No instancio las ventanas para ahorrar memoria
+
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -34,6 +44,9 @@ public class Principal extends JFrame {
 				}
 			}
 		});
+		
+		System.out.println("ANCHO: " + obtenerAnchoPantalla());
+		System.out.println("ALTO: " + obtenerAltoPantalla());
 	}
 
 	/**
@@ -49,14 +62,15 @@ public class Principal extends JFrame {
 		contentPane.setLayout(null);
 		
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 1355, 21);
+		menuBar.setBounds(0, 0, (int) obtenerAnchoPantalla(), 21);
+		//menuBar.setMinimumSize(obtenerAnchoPantalla());; // ajusto menuBar al largo de la pantalla
 		contentPane.add(menuBar);
 		
-		JMenu mnNewMenu = new JMenu("Sistema");
-		menuBar.add(mnNewMenu);
+		JMenu mnSistema = new JMenu("Sistema");
+		menuBar.add(mnSistema);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Cerrar sesión");
-		mnNewMenu.add(mntmNewMenuItem);
+		JMenuItem mntmCerrarSesin = new JMenuItem("Cerrar sesión");
+		mnSistema.add(mntmCerrarSesin);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
 		mntmSalir.addActionListener(new ActionListener() {
@@ -64,13 +78,13 @@ public class Principal extends JFrame {
 				Principal.this.dispose();
 			}
 		});
-		mnNewMenu.add(mntmSalir);
+		mnSistema.add(mntmSalir);
 		
 		JMenu mnClientes = new JMenu("Clientes");
 		menuBar.add(mnClientes);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Alta/Modificación");
-		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+		JMenuItem mntmAltamodificacin = new JMenuItem("Alta/Modificación");
+		mntmAltamodificacin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!(mantenimientoCliente instanceof MantenimientoCliente)) {
 					mantenimientoCliente = new MantenimientoCliente();
@@ -78,26 +92,21 @@ public class Principal extends JFrame {
 				centrarVentanaInterna(mantenimientoCliente);
 			}
 		});
-		mnClientes.add(mntmNewMenuItem_1);
+		mnClientes.add(mntmAltamodificacin);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reporte");
-		mnClientes.add(mntmNewMenuItem_2);
-		
-		JMenu mnProveedores = new JMenu("Proveedores");
-		menuBar.add(mnProveedores);
-		
-		JMenu mnMateriales = new JMenu("Materiales");
-		menuBar.add(mnMateriales);
+		JMenuItem mntmReportes = new JMenuItem("Reportes");
+		mnClientes.add(mntmReportes);
 		
 		desktopPane = new JDesktopPane();
-		desktopPane.setBounds(0, 25, 1343, 677);
-		contentPane.add(desktopPane);
-		//desktopPane.setSize(getMaximumSize());
-		this.setExtendedState(MAXIMIZED_BOTH);
+		//desktopPane.setBounds(0, 26, 394, 244);
+		desktopPane.setBounds(0, 26, (int) obtenerAnchoPantalla(), (int) obtenerAltoPantalla());
 		
+		contentPane.add(desktopPane);
+		this.setExtendedState(MAXIMIZED_BOTH);
 	}
 	
-	// Métodos auxiliares
+
+	// Métodos auxiliares //////////////////////////////////////////////////////////////////////////////////////////////////
 	private void centrarVentanaInterna(JInternalFrame internalFrame) {
 		int x = (desktopPane.getWidth() /2) - internalFrame.getWidth() /2;
 		int y = (desktopPane.getHeight() /2) - internalFrame.getHeight() /2;
@@ -111,4 +120,19 @@ public class Principal extends JFrame {
 			internalFrame.show();
 		}
 	}
+	
+	private static double obtenerAnchoPantalla() {
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension tamanio = tk.getScreenSize();
+		return tamanio.getWidth();
+		
+	}
+	
+	private static double obtenerAltoPantalla() {
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension tamanio = tk.getScreenSize();
+		return tamanio.getHeight();
+		
+	}
+	
 }
