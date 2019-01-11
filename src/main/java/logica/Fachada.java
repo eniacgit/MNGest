@@ -3,6 +3,7 @@ package logica;
 import java.util.List;
 
 import persistencia.DAOMantenimientoClientes;
+import valueObjects.VOCliente;
 
 public class Fachada implements IFachada{
 
@@ -18,13 +19,24 @@ public class Fachada implements IFachada{
 		}
 		return fachada;
 	}
-    public List<String> listarClientes(){
+	
+	public List<String> listarClientes(){
 		DAOMantenimientoClientes dao = new DAOMantenimientoClientes();
 		return dao.listarClientes();
 	}
 	
+	public VOCliente obtenerDatosCliente(String nombre) {
+		DAOMantenimientoClientes dao = new DAOMantenimientoClientes();
+		return dao.obtenerDatosCliente(nombre);
+	}
 	
-	
-	
+	public int insertarCliente(VOCliente cliente) {
+		DAOMantenimientoClientes dao = new DAOMantenimientoClientes();
+		return dao.insertarCliente(cliente);
+	}
+	public boolean existeCliente(String nombre) {
+		DAOMantenimientoClientes dao = new DAOMantenimientoClientes();
+		return dao.existeCliente(nombre);
+	}
 	
 }
