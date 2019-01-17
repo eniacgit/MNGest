@@ -22,6 +22,10 @@ public class Principal extends JFrame {
 	private JPanel contentPane;
 	private JDesktopPane desktopPane;
 	private MantenimientoCliente mantenimientoCliente; // No instancio las ventanas para ahorrar memoria
+	private ReporteClientes reporteClientes; 
+	private MantenimientoServicio mantenimientoServicio;
+	private MantenimientoMaterial mantenimientoMaterial; 
+	private MantenimientoProveedor mantenimientoProveedor;
 
 	/**
 	 * Launch the application.
@@ -95,7 +99,56 @@ public class Principal extends JFrame {
 		mnClientes.add(mntmAltamodificacin);
 		
 		JMenuItem mntmReportes = new JMenuItem("Reportes");
+		mntmReportes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!(reporteClientes instanceof ReporteClientes)) {
+					reporteClientes = new ReporteClientes();
+				}
+				centrarVentanaInterna(reporteClientes);				
+			}
+		});
 		mnClientes.add(mntmReportes);
+		
+		JMenu mnProveedores = new JMenu("Proveedores");
+		menuBar.add(mnProveedores);
+		
+		JMenuItem mntmServicios = new JMenuItem("Servicios");
+		mntmServicios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!(mantenimientoServicio instanceof MantenimientoServicio)) {
+					mantenimientoServicio = new MantenimientoServicio();
+				}
+				centrarVentanaInterna(mantenimientoServicio);				
+			
+			}
+		});
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("Alta / Modificación");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (!(mantenimientoProveedor instanceof MantenimientoProveedor)) {
+					mantenimientoProveedor = new MantenimientoProveedor();
+				}
+				centrarVentanaInterna(mantenimientoProveedor);
+			}
+		});
+		mnProveedores.add(mntmNewMenuItem);
+		mnProveedores.add(mntmServicios);
+		
+		JMenuItem mntmMateriales = new JMenuItem("Materiales");
+		mntmMateriales.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!(mantenimientoMaterial instanceof MantenimientoMaterial)) {
+					mantenimientoMaterial = new MantenimientoMaterial();
+				}
+				centrarVentanaInterna(mantenimientoMaterial);				
+			}
+		});
+		mnProveedores.add(mntmMateriales);
+		
+		JMenuItem mntmReportes_1 = new JMenuItem("Reportes");
+		mnProveedores.add(mntmReportes_1);
 		
 		desktopPane = new JDesktopPane();
 		//desktopPane.setBounds(0, 26, 394, 244);
@@ -134,5 +187,4 @@ public class Principal extends JFrame {
 		return tamanio.getHeight();
 		
 	}
-	
 }

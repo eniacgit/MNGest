@@ -23,6 +23,21 @@
 	    <artifactId>mysql-connector-java</artifactId>
 	    <version>8.0.11</version>
 	</dependency>  
+	
+	<!-- https://mvnrepository.com/artifact/com.toedter/jcalendar -->
+	<dependency>
+	    <groupId>com.toedter</groupId>
+	    <artifactId>jcalendar</artifactId>
+	    <version>1.4</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+	<dependency>
+	    <groupId>commons-validator</groupId>
+	    <artifactId>commons-validator</artifactId>
+	    <version>1.4.0</version>
+	</dependency>
+	
   
   </dependencies>  
   

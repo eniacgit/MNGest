@@ -27,4 +27,14 @@ public class ControladorMantenimientoClientes {
 		IFachada fachada = Fachada.getInstanciaSingleton();
 		return fachada.existeCliente(nombre);
 	}
+	
+	public int modificarCliente(String nombre, VOCliente cliente) {
+		IFachada fachada = Fachada.getInstanciaSingleton();
+		return fachada.modificarCliente(nombre, cliente);
+	}
+	
+	public List<VOCliente> listarTuplasClientes(String tipoCliente){
+		IFachada fachada = Fachada.getInstanciaSingleton();
+		return fachada.listarTuplasClientes(tipoCliente);
+	}
 }

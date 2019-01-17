@@ -49,6 +49,7 @@ public class MantenimientoCliente extends JInternalFrame {
 	private JLabel lblRaznSocial;
 	private JComboBox<String> comboBox;
 	private JLabel label_rut;
+	private JLabel label_nombreNuevo;
 
 	/**
 	 * Launch the application.
@@ -71,7 +72,7 @@ public class MantenimientoCliente extends JInternalFrame {
 	 */
 	public MantenimientoCliente() {
 		setClosable(true);
-		setTitle("Alta y Modificación de Clientes");
+		setTitle("Mantenimiento de Clientes");
 		setBounds(100, 100, 807, 384);
 		getContentPane().setLayout(null);
 		
@@ -406,6 +407,136 @@ public class MantenimientoCliente extends JInternalFrame {
 		panel_1.add(btnAlta);
 		
 		JButton btnModificar = new JButton("Modificar");
+		btnModificar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//////////////////////////////////////////////////////////////////////
+				String nombre = textFieldNombre.getText();
+				String celular = textFieldCelular.getText();
+				String email = textFieldEmail.getText();
+				String rut = textFieldRUT.getText();
+				String cambiarNombre = textFieldCambiarNombre.getText();
+				String telefono = textFieldTelefono.getText();
+				String direccion = textFieldDireccionEnvio.getText();				
+				String razonSocial = textFieldRazonSocial.getText();
+				
+				boolean error = false;
+				
+				ControladorMantenimientoClientes controlador = new ControladorMantenimientoClientes();
+				
+				// VALIDACION NOMBRE
+				if (nombre.isEmpty()) {
+					label_nombre.setVisible(true);
+					label_nombre.setToolTipText("No ha escrito el nombre del Cliente.");
+					error = true;
+				}else {
+					label_nombre.setVisible(false);
+					
+				}
+				
+				// VALIDACION CELULAR
+				if (celular.isEmpty()) {
+					label_celular.setVisible(true);
+					label_celular.setToolTipText("No ha escrito el numero de celular.");
+					error = true;
+				}else
+					if (!esValidoCelular(celular)) {
+						label_celular.setVisible(true);
+						label_celular.setToolTipText("Número de celular incorrecto.");
+						error = true;
+					}else
+						label_celular.setVisible(false);
+				
+				//VALIDACION EMAIL
+				if (email.isEmpty()) {
+					label_email.setVisible(true);
+					label_email.setToolTipText("No ha escrito direccion de correo electrónico.");
+					error = true;
+				}else
+					if (!esValidoEmail(email)) {
+						label_email.setVisible(true);
+						label_email.setToolTipText("Email incorrecto.");
+						error = true;
+					}else
+						label_email.setVisible(false);
+				
+				// VALIDACION DE TELEFONO (no es campo obligatorio)
+				if (!telefono.isEmpty()) {
+					if (!esValidoTelefono(telefono)) {
+						label_telefono.setVisible(true);
+						label_telefono.setToolTipText("Numero de telefono incorrecto.");
+						error = true;
+					}else
+						label_telefono.setVisible(false);
+				}else
+					label_telefono.setVisible(false);
+				
+				
+				// VALIDACION DIRECCION DE ENVIO
+				if (direccion.isEmpty()) {
+					label_direccion.setVisible(true);
+					label_direccion.setToolTipText("No ha escrito direccion de envio.");
+					error = true;
+				}else
+					label_direccion.setVisible(false);
+				
+				
+				String tipoCliente = (String) comboBox.getSelectedItem();
+				if (tipoCliente.equals("CORPORATIVO")) {
+					// VALIDACION RUT
+					if (!rut.isEmpty()) {
+						if (!esValidoRUT(rut)) {
+							label_rut.setVisible(true);
+							label_rut.setToolTipText("RUT incorrecto, deben ser 12 digitos numericos.");
+							error = true;
+						}else
+							label_rut.setVisible(false);
+					}else {
+						label_rut.setVisible(true);
+						label_rut.setToolTipText("No ha escrito el RUT.");
+						error = true;
+					}
+					
+					// VALIDACION RAZON SOCIAL
+					if (razonSocial.isEmpty()) {
+						label_razonSocial.setVisible(true);
+						label_razonSocial.setToolTipText("No ha escrito razón social.");
+						error = true;
+					}
+					
+					
+					
+				}else {
+					// si es consumidor final
+					label_rut.setVisible(false);
+					label_razonSocial.setVisible(false);
+				}
+				
+				String nombreNuevo = textFieldCambiarNombre.getText();
+				if (!nombreNuevo.isEmpty()) {
+					if (controlador.existeCliente(nombreNuevo)) {
+						label_nombreNuevo.setVisible(true);
+						label_nombreNuevo.setToolTipText("Ya existe un Cliente con ese nombre.");
+						error = true;
+					}else {
+						label_nombreNuevo.setVisible(false);						
+					}
+				}
+				
+				if (!error) {
+					VOCliente cliente = new VOCliente(nombre, email, telefono, celular, rut, razonSocial, tipoCliente, direccion);
+					String nombreCliente = cliente.getNombre();
+					
+					if (!nombreNuevo.isEmpty())						
+						cliente.setNombre(nombreNuevo);
+						
+					controlador.modificarCliente(nombreCliente, cliente);
+					listarClientes();
+					JOptionPane.showMessageDialog(getContentPane(), "Cliente modificado con éxito.", "Modificación exitosa", JOptionPane.PLAIN_MESSAGE);
+				}
+				
+				
+			}
+		});
 		btnModificar.setBounds(166, 292, 117, 25);
 		panel_1.add(btnModificar);
 		
@@ -467,6 +598,12 @@ public class MantenimientoCliente extends JInternalFrame {
 		});
 		comboBox.setBounds(32, 205, 194, 24);
 		panel_1.add(comboBox);
+		
+		label_nombreNuevo = new JLabel("");
+		label_nombreNuevo.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_nombreNuevo.setBounds(485, 52, 20, 20);
+		label_nombreNuevo.setVisible(false);
+		panel_1.add(label_nombreNuevo);
 		comboBox.addItem("CORPORATIVO");
 		comboBox.addItem("CONSUMIDOR FINAL");
 		

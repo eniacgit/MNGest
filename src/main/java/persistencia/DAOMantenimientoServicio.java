@@ -8,13 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import valueObjects.VOServicio;
 
-import valueObjects.VOCliente;
+public class DAOMantenimientoServicio {
 
-
-public class DAOMantenimientoClientes {
-
-	public List<String> listarClientes(){
+	public List<String> listarServicio(){
 		AccesoBD accesoBD = new AccesoBD();		
 		Connection con = accesoBD.conectarBD();
 		Consultas consultas = new Consultas();
@@ -26,7 +24,7 @@ public class DAOMantenimientoClientes {
 		
 		try {
 			stmt = con.createStatement();
-			String strConsulta = consultas.listarClientes();
+			String strConsulta = consultas.listarServicios();
 			pstmt = con.prepareStatement(strConsulta);
 			ResultSet rs = pstmt.executeQuery();
 			lstClientes = new ArrayList<String>();
@@ -52,24 +50,22 @@ public class DAOMantenimientoClientes {
 		return lstClientes;				
 	}
 	
-	public VOCliente obtenerDatosCliente(String nombre) {
+	public VOServicio obtenerDatosServicio(String nombre) {
 		AccesoBD accesoBD = new AccesoBD();		
 		Connection con = accesoBD.conectarBD();
 		Consultas consultas = new Consultas();
 		
-		VOCliente voCliente = null;
+		VOServicio voServicio = null;
 		
-		//Statement stmt=null;
 		PreparedStatement pstmt=null;
 		
 		try {
-			//stmt = con.createStatement();
-			String strConsulta = consultas.obtenerDatosCliente();
+			String strConsulta = consultas.obtenerDatosServicio();
 			pstmt = con.prepareStatement(strConsulta);
 			pstmt.setString(1, nombre);
 			ResultSet rs = pstmt.executeQuery();
 			rs.next();
-			voCliente = new VOCliente(nombre, rs.getString("email"), rs.getString("telefono"), rs.getString("celular"), rs.getString("rut"), rs.getString("razonSocial"), rs.getString("tipo"), rs.getString("direccion"));
+			voServicio = new VOServicio(nombre, rs.getString("descripcion"));
 			rs.close();
 		//	stmt.close();			
 		} catch (SQLException e) {
@@ -85,56 +81,47 @@ public class DAOMantenimientoClientes {
 				e.printStackTrace();
 			}			
 		}
-		return voCliente;		
+		return voServicio;		
 	}
 	
-	public boolean existeCliente(String nombre) {
-		// Retorna true si el nombre del cliente ya fue dado de alta
+	public boolean existeServicio(String nombre) {
+		// Retorna true si el nombre del servicio ya fue dado de alta
 		AccesoBD accesoBD = new AccesoBD();
-			boolean existeCliente = false;
+			boolean existeServicio = false;
 			Connection con = accesoBD.conectarBD();
 			Consultas consultas = new Consultas();
 			
-			String select = consultas.existeCliente();
+			String select = consultas.existeServicio();
 			try {
 				PreparedStatement pstmt = con.prepareStatement(select);
 				pstmt.setString(1, nombre);
 				
 				ResultSet rs = pstmt.executeQuery();
 				if (rs.next())
-					existeCliente = true;
+					existeServicio = true;
 				rs.close();
 				pstmt.close();
-				
+				accesoBD.desconectarBD(con);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}		
-			accesoBD.desconectarBD(con);
-			return existeCliente;
+			}					
+			return existeServicio;
 		}
 	
-	public int insertarCliente(VOCliente cliente) {
+	public int insertarServicio(VOServicio servicio) {
 		AccesoBD accesoBD = new AccesoBD();		
 		Connection con = accesoBD.conectarBD();
 		Consultas consultas = new Consultas();
 		
 		int rowCount=0;
-		String insert = consultas.insertarCliente();
+		String insert = consultas.insertarServicio();
 		PreparedStatement pstmt = null;
 		
 		try {
-			pstmt =con.prepareStatement(insert);
-			
-			pstmt.setString(1, cliente.getNombre());
-			pstmt.setString(2, cliente.getEmail());
-			pstmt.setString(3, cliente.getTelefono());
-			pstmt.setString(4, cliente.getCelular());
-			pstmt.setString(5, cliente.getRut());
-			pstmt.setString(6, cliente.getRazonSocial());
-			pstmt.setString(7, cliente.getTipo());
-			pstmt.setString(8, cliente.getDireccion());		
-			
+			pstmt =con.prepareStatement(insert);			
+			pstmt.setString(1, servicio.getNombre());
+			pstmt.setString(2, servicio.getDescripcion());			
 			rowCount = pstmt.executeUpdate();			
 		} catch (SQLException e) {
 			System.out.println(">> Tipo de datos incorrectos");
@@ -152,27 +139,21 @@ public class DAOMantenimientoClientes {
 		return rowCount;
 	}
 	
-	public int modificarCliente(String nombre, VOCliente cliente) {
+	public int modificarServicio(String nombre, VOServicio servicio) {
 		AccesoBD accesoBD = new AccesoBD();		
 		Connection con = accesoBD.conectarBD();
 		Consultas consultas = new Consultas();
 		
 		int rowCount=0;
-		String update = consultas.modificarCliente();
+		String update = consultas.modificarServicio();
 		PreparedStatement pstmt = null;
 		
 		try {
 			pstmt =con.prepareStatement(update);
 			
-			pstmt.setString(1, cliente.getNombre());
-			pstmt.setString(2, cliente.getEmail());
-			pstmt.setString(3, cliente.getTelefono());
-			pstmt.setString(4, cliente.getCelular());
-			pstmt.setString(5, cliente.getRut());
-			pstmt.setString(6, cliente.getRazonSocial());
-			pstmt.setString(7, cliente.getTipo());
-			pstmt.setString(8, cliente.getDireccion());		
-			pstmt.setString(9, nombre);
+			pstmt.setString(1, servicio.getNombre());
+			pstmt.setString(2, servicio.getDescripcion());
+			pstmt.setString(3, nombre);
 			
 			rowCount = pstmt.executeUpdate();			
 		} catch (SQLException e) {
@@ -189,53 +170,6 @@ public class DAOMantenimientoClientes {
 			}			
 		}				
 		return rowCount;
-	}
-	
-	public List<VOCliente> listarTuplasClientes(String tipoCliente){
-		VOCliente cliente = null;
-		List<VOCliente> tuplas = null;
-		AccesoBD accesoBD = new AccesoBD();		
-		Connection con = accesoBD.conectarBD();
-		Consultas consultas = new Consultas();
-		
-		
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		tuplas = new ArrayList<VOCliente>();
-		try {
-			String listar = consultas.listarTuplasClientes();
-			pstmt =con.prepareStatement(listar);
-			pstmt.setString(1, tipoCliente);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				cliente = new VOCliente();
-				cliente.setNombre(rs.getString("nombre"));
-				cliente.setEmail(rs.getString("email"));
-				cliente.setTelefono(rs.getString("telefono"));
-				cliente.setCelular(rs.getString("celular"));
-				cliente.setRut(rs.getString("rut"));
-				cliente.setRazonSocial(rs.getString("razonSocial"));
-				cliente.setDireccion(rs.getString("direccion"));
-				tuplas.add(cliente);						
-			}			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				rs.close();
-				pstmt.close();
-				accesoBD.desconectarBD(con);
-			} catch (SQLException e) {
-				System.out.println(">> ERROR 2");
-				e.printStackTrace();
-			}			
-		}				
-		
-		return tuplas;
-	}
-	
+	}	
 	
 }
