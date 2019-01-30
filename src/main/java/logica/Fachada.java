@@ -1,15 +1,22 @@
 package logica;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import persistencia.DAOMantenimientoClientes;
 import persistencia.DAOMantenimientoMaterial;
 import persistencia.DAOMantenimientoProveedor;
 import persistencia.DAOMantenimientoServicio;
+import persistencia.DAOPagoProveedores;
+import persistencia.DAOVentas;
 import valueObjects.VOCliente;
+import valueObjects.VODetalleProveedor;
+import valueObjects.VODetallesProducto;
 import valueObjects.VOMaterial;
 import valueObjects.VOProveedor;
 import valueObjects.VOServicio;
+import valueObjects.VOVentas;
 
 public class Fachada implements IFachada{
 
@@ -175,5 +182,46 @@ public class Fachada implements IFachada{
 	public int eliminarMaterialProveedor(String proveedor, String material) {
 		DAOMantenimientoProveedor dao = new DAOMantenimientoProveedor();
 		return dao.eliminarMaterialProveedor(proveedor, material);
+	}
+	
+	// VENTAS
+	public List<VOVentas> listarTuplasVentas(String fechaInicio, String fechaFin){
+		DAOVentas dao = new DAOVentas();
+		return dao.listarTuplasVentas(fechaInicio,fechaFin);
+	}
+	
+	public List<String> listarClientesRangoFechaProduccion(String fechaInicio, String fechaFin){
+		DAOPagoProveedores dao = new DAOPagoProveedores();
+		return dao.listarClientesRangoFechaProduccion(fechaInicio, fechaFin);
+	}
+	
+	// FUNCIONES UTILES
+	// Convierte una fecha con formato yyyy-MM-dd a dd/MM/yyyy
+	public String formatearFecha(String fecha) {
+		String fechAux="";		
+		try {
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+			fechAux = sdf2.format(sdf1.parse(fecha));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fechAux;
+	}
+	
+	public String obtenerTipoCliente(String nombreCliente) {
+		DAOPagoProveedores dao = new DAOPagoProveedores();
+		return dao.obtenerTipoCliente(nombreCliente);
+	}
+	
+	public VODetallesProducto obtenerDetallesProducto(String cotizacion) {
+		DAOPagoProveedores dao = new DAOPagoProveedores();
+		return dao.obtenerDetallesProducto(cotizacion);
+	}
+	
+	public List<VODetalleProveedor> obtenerListaProveedores(String cotizacion){
+		DAOPagoProveedores dao = new DAOPagoProveedores();
+		return dao.obtenerListaProveedores(cotizacion);
 	}
 }

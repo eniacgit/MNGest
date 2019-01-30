@@ -141,13 +141,13 @@ public class MantenimientoMaterial extends JInternalFrame {
 		panel_1.add(textFieldCambiarNombre);
 		
 		labelNombre = new JLabel("");
-		labelNombre.setIcon(new ImageIcon(MantenimientoMaterial.class.getResource("/grafica/imagenes/Error.png")));
+		labelNombre.setIcon(new ImageIcon(MantenimientoMaterial.class.getResource("/resources/Error.png")));
 		labelNombre.setBounds(210, 52, 20, 20);
 		panel_1.add(labelNombre);
 		labelNombre.setVisible(false);
 		
 		labelCambiarNombre = new JLabel("");
-		labelCambiarNombre.setIcon(new ImageIcon(MantenimientoMaterial.class.getResource("/grafica/imagenes/Error.png")));
+		labelCambiarNombre.setIcon(new ImageIcon(MantenimientoMaterial.class.getResource("/resources/Error.png")));
 		labelCambiarNombre.setBounds(425, 52, 20, 20);
 		panel_1.add(labelCambiarNombre);
 		labelCambiarNombre.setVisible(false);

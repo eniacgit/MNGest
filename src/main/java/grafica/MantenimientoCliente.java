@@ -174,7 +174,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		textFieldNombre.setColumns(10);
 		
 		label_nombre = new JLabel("");
-		label_nombre.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_nombre.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_nombre.setBounds(233, 52, 20, 20);
 		panel_1.add(label_nombre);
 		label_nombre.setVisible(false);
@@ -189,7 +189,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		panel_1.add(textFieldCelular);
 		
 		label_celular = new JLabel("");
-		label_celular.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_celular.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_celular.setBounds(233, 104, 20, 20);
 		panel_1.add(label_celular);
 		label_celular.setVisible(false);
@@ -204,7 +204,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		panel_1.add(textFieldEmail);
 		
 		label_email = new JLabel("");
-		label_email.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_email.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_email.setBounds(233, 156, 20, 20);
 		panel_1.add(label_email);
 		label_email.setVisible(false);
@@ -219,7 +219,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		panel_1.add(textFieldTelefono);
 		
 		label_telefono = new JLabel("");
-		label_telefono.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_telefono.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_telefono.setBounds(485, 104, 20, 20);
 		panel_1.add(label_telefono);
 		label_telefono.setVisible(false);
@@ -234,7 +234,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		panel_1.add(textFieldDireccionEnvio);
 		
 		label_direccion = new JLabel("");
-		label_direccion.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_direccion.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_direccion.setBounds(485, 156, 20, 20);
 		panel_1.add(label_direccion);
 		label_direccion.setVisible(false);
@@ -255,7 +255,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		
 		
 		label_razonSocial = new JLabel("");
-		label_razonSocial.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_razonSocial.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_razonSocial.setBounds(485, 205, 20, 20);
 		panel_1.add(label_razonSocial);
 		label_razonSocial.setVisible(false);
@@ -279,7 +279,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		panel_1.add(textFieldRUT);
 		
 		label_rut = new JLabel("");
-		label_rut.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_rut.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_rut.setBounds(233, 257, 20, 20);
 		panel_1.add(label_rut);
 		label_rut.setVisible(false);
@@ -600,7 +600,7 @@ public class MantenimientoCliente extends JInternalFrame {
 		panel_1.add(comboBox);
 		
 		label_nombreNuevo = new JLabel("");
-		label_nombreNuevo.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/grafica/imagenes/Error.png")));
+		label_nombreNuevo.setIcon(new ImageIcon(MantenimientoCliente.class.getResource("/resources/Error.png")));
 		label_nombreNuevo.setBounds(485, 52, 20, 20);
 		label_nombreNuevo.setVisible(false);
 		panel_1.add(label_nombreNuevo);

@@ -171,6 +171,50 @@ public class Consultas {
 		return consulta;
 	}
 	
+	public String listarTuplasVentas() {
+		String consulta ="SELECT p.cotizacion, c.nombre, c.tipo, pMN.nombre, cat.nombre, pMN.cantidad, pMN.moneda, pMN.total, pMN.fechaProduccion,pMN.fechaEntrega\n" + 
+				"FROM mn_presupuesto p\n" + 
+				"INNER JOIN mn_cliente_presupuesto cp ON cp.idPresupuesto = p.idPresupuesto\n" + 
+				"INNER JOIN mn_cliente c ON c.idCliente = cp.idCliente\n" + 
+				"INNER JOIN mn_productoMN pMN ON pMN.idClientePresupuesto = cp.idClientePresupuesto\n" + 
+				"INNER JOIN mn_producto pd ON pd.idPresupuesto = p.idPresupuesto\n" + 
+				"INNER JOIN mn_categoria cat ON cat.idCategoria =  pd.idCategoria\n" + 
+				"WHERE cp.estado=4 AND pMN.fechaEntrega BETWEEN ? AND ? ORDER BY p.cotizacion;";
+		return consulta;
+	}
 	
+	// PAGO PROVEEDORES
 	
+	public String listarClientesRangoFechaProduccion() {
+		String consulta = "SELECT CONCAT(p.cotizacion, ' : ', c.nombre)\n" + 
+				"FROM mn_cliente c\n" + 
+				"INNER JOIN mn_cliente_presupuesto cp ON cp.idCliente = c.idCliente\n" + 
+				"INNER JOIN mn_productoMN pmn ON pmn.idClientePresupuesto = cp.idClientePresupuesto\n" + 
+				"INNER JOIN mn_presupuesto p ON p.idPresupuesto =cp.idPresupuesto\n" + 
+				"WHERE cp.estado = 3 AND pmn.fechaProduccion BETWEEN ? AND ? \n" + 
+				"ORDER BY c.nombre;";
+		return consulta;
+	}
+	
+	public String obtenerDetallesProducto() {
+		String consulta = "SELECT pro.nombre, cat.nombre, pMN.cantidad, pMN.moneda, pMN.total, pMN.fechaProduccion\n" + 
+				"FROM mn_producto pro\n" + 
+				"INNER JOIN mn_presupuesto pre ON pre.idPresupuesto = pro.idPresupuesto\n" + 
+				"INNER JOIN mn_categoria cat ON cat.idCategoria = pro.idCategoria\n" + 
+				"INNER JOIN mn_cliente_presupuesto cp ON cp.idPresupuesto = pre.idPresupuesto\n" + 
+				"INNER JOIN mn_productoMN pMN ON pMN.idClientePresupuesto = cp.idClientePresupuesto\n" + 
+				"WHERE pre.cotizacion = ?;";
+		return consulta;
+	}
+	
+	public String obtenerListaProveedores() {
+		String consulta = "SELECT pro.tipoProveedor, pro.detalles, pro.moneda, pro.precio\n" + 
+				"FROM mn_proveedorMN pro\n" + 
+				"INNER JOIN mn_productoMN_proveedorMN propro ON propro.idProveedorMN = pro.idProveedorMN\n" + 
+				"INNER JOIN mn_productoMN pMN ON pMN.idProductoMN = propro.idProductoMN\n" + 
+				"INNER JOIN mn_cliente_presupuesto cp ON cp.idClientePresupuesto = pMN.idClientePresupuesto\n" + 
+				"INNER JOIN mn_presupuesto p ON p.idPresupuesto = cp.idPresupuesto\n" + 
+				"WHERE p.cotizacion = ?;";
+		return consulta;
+	}
 }

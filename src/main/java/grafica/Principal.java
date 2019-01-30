@@ -26,6 +26,8 @@ public class Principal extends JFrame {
 	private MantenimientoServicio mantenimientoServicio;
 	private MantenimientoMaterial mantenimientoMaterial; 
 	private MantenimientoProveedor mantenimientoProveedor;
+	private ReporteVentas reporteVentas;
+	private ReportePagosProveedores reportePagosProveedores;
 
 	/**
 	 * Launch the application.
@@ -147,8 +149,31 @@ public class Principal extends JFrame {
 		});
 		mnProveedores.add(mntmMateriales);
 		
-		JMenuItem mntmReportes_1 = new JMenuItem("Reportes");
-		mnProveedores.add(mntmReportes_1);
+		JMenu mnNewMenu = new JMenu("Ventas");
+		menuBar.add(mnNewMenu);
+		
+		JMenuItem mntmReporteDeVentas = new JMenuItem("Reporte de Ventas");
+		mntmReporteDeVentas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if (!(reporteVentas instanceof ReporteVentas)) {
+					reporteVentas = new ReporteVentas();
+				}
+				centrarVentanaInterna(reporteVentas);	
+			}
+		});
+		mnNewMenu.add(mntmReporteDeVentas);
+		
+		JMenuItem mntmReporteDePagos_1 = new JMenuItem("Pagos a Proveedores");
+		mntmReporteDePagos_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if (!(reportePagosProveedores instanceof ReportePagosProveedores)) {
+					reportePagosProveedores = new ReportePagosProveedores();
+				}
+				centrarVentanaInterna(reportePagosProveedores);
+			}
+		});
+		mnNewMenu.add(mntmReporteDePagos_1);
 		
 		desktopPane = new JDesktopPane();
 		//desktopPane.setBounds(0, 26, 394, 244);

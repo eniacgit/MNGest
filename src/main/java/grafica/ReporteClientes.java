@@ -156,7 +156,7 @@ public class ReporteClientes extends JInternalFrame {
 					JasperPrint print;
 					try {
 						print = JasperFillManager.fillReport("reportes//jasper//clientes_consumidor_final.jasper", parametros,new JRBeanCollectionDataSource(getTuplasTablaClientesConsumidorFinal()));
-						JasperExportManager.exportReportToPdfFile(print, "reportes//pdf/clientes_consumidor_final.pdf");
+						JasperExportManager.exportReportToPdfFile(print, "reportes//pdf//clientes_consumidor_final.pdf");
 						JasperViewer.viewReport(print,false);
 						
 						

@@ -26,7 +26,7 @@
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="802" height="96" uuid="0b73372d-bf4d-462d-8cab-b56c69b36acd"/>
-				<imageExpression><![CDATA["file:/home/danny/git/mn-presupuesto-espacio/reportes/jasper/imagenes/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["src/main/java/grafica/imagenes/logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -47,14 +47,14 @@
 				<text><![CDATA[Email]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="35" width="90" height="16" uuid="6993adac-63b6-48ac-9883-528282158159"/>
+				<reportElement x="320" y="34" width="90" height="16" uuid="6993adac-63b6-48ac-9883-528282158159"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Teléfono]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="410" y="35" width="90" height="16" uuid="165e89f7-4533-48f9-9a54-dc433ba2f6e9"/>
+				<reportElement x="410" y="34" width="90" height="16" uuid="165e89f7-4533-48f9-9a54-dc433ba2f6e9"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
@@ -84,37 +84,23 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="33" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="3" width="149" height="24" uuid="cedb2c76-c1e9-4b8f-9e82-9ff68e699a12"/>
+				<reportElement x="1" y="3" width="149" height="16" uuid="cedb2c76-c1e9-4b8f-9e82-9ff68e699a12"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="151" y="3" width="169" height="24" uuid="3d090ace-c921-4b7d-8457-60183abe974d"/>
+				<reportElement x="151" y="3" width="169" height="16" uuid="3d090ace-c921-4b7d-8457-60183abe974d"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="1" width="90" height="24" uuid="9b693cec-c540-4b08-923f-8d677f4b4ece"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="410" y="0" width="90" height="26" uuid="d0aabb84-ad70-4e29-a543-039ca4ab85fe"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="660" y="0" width="140" height="26" uuid="af8512bd-a270-40d9-af62-55892ca4a975"/>
+				<reportElement x="660" y="3" width="140" height="16" uuid="af8512bd-a270-40d9-af62-55892ca4a975"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
@@ -124,18 +110,32 @@
 				<reportElement x="1" y="-1" width="800" height="1" uuid="98b42b8c-fd79-4572-9c69-a91fa127613f"/>
 			</line>
 			<textField>
-				<reportElement x="500" y="3" width="80" height="23" uuid="305e989f-84dc-441c-b271-1bb339f7b29c"/>
+				<reportElement x="500" y="3" width="80" height="16" uuid="305e989f-84dc-441c-b271-1bb339f7b29c"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{rut}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="580" y="3" width="79" height="24" uuid="188adffa-9f0d-4081-8143-ec792df69154"/>
+				<reportElement x="580" y="3" width="79" height="16" uuid="188adffa-9f0d-4081-8143-ec792df69154"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{razonSocial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="3" width="90" height="16" uuid="9b693cec-c540-4b08-923f-8d677f4b4ece"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="3" width="90" height="16" uuid="d0aabb84-ad70-4e29-a543-039ca4ab85fe"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

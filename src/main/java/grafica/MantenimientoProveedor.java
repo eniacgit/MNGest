@@ -1,10 +1,13 @@
 package grafica;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JInternalFrame;
@@ -17,6 +20,13 @@ import org.olap4j.metadata.Measure.Aggregator;
 import com.toedter.calendar.JDateChooser;
 
 import controladores.ControladorMantenimientoProveedor;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.view.JasperViewer;
 import valueObjects.VOProveedor;
 
 import javax.swing.JLabel;
@@ -39,6 +49,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.JComboBox;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import javax.swing.JFrame;
 
 public class MantenimientoProveedor extends JInternalFrame {
 	private JTextField textFiltro;
@@ -181,7 +192,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		textFieldNombre.setColumns(10);
 		
 		label_nombre = new JLabel("");
-		label_nombre.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/grafica/imagenes/Error.png")));
+		label_nombre.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/resources/Error.png")));
 		label_nombre.setBounds(233, 52, 20, 20);
 		panel_1.add(label_nombre);
 		label_nombre.setVisible(false);
@@ -196,7 +207,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_1.add(textFieldEmail);
 		
 		label_email = new JLabel("");
-		label_email.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/grafica/imagenes/Error.png")));
+		label_email.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/resources/Error.png")));
 		label_email.setBounds(233, 156, 20, 20);
 		panel_1.add(label_email);
 		label_email.setVisible(false);
@@ -211,7 +222,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_1.add(textFieldTelefono);
 		
 		label_telefono = new JLabel("");
-		label_telefono.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/grafica/imagenes/Error.png")));
+		label_telefono.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/resources/Error.png")));
 		label_telefono.setBounds(233, 101, 20, 20);
 		panel_1.add(label_telefono);
 		label_telefono.setVisible(false);
@@ -226,7 +237,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_1.add(textFieldDireccionEnvio);
 		
 		label_direccion = new JLabel("");
-		label_direccion.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/grafica/imagenes/Error.png")));
+		label_direccion.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/resources/Error.png")));
 		label_direccion.setBounds(485, 101, 20, 20);
 		panel_1.add(label_direccion);
 		label_direccion.setVisible(false);
@@ -243,7 +254,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		
 		
 		label_url = new JLabel("");
-		label_url.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/grafica/imagenes/Error.png")));
+		label_url.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/resources/Error.png")));
 		label_url.setBounds(485, 156, 20, 20);
 		panel_1.add(label_url);
 		label_url.setVisible(false);
@@ -482,7 +493,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_1.add(btnLimpiarDat);
 		
 		label_nombreNuevo = new JLabel("");
-		label_nombreNuevo.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/grafica/imagenes/Error.png")));
+		label_nombreNuevo.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/resources/Error.png")));
 		label_nombreNuevo.setBounds(485, 52, 20, 20);
 		label_nombreNuevo.setVisible(false);
 		panel_1.add(label_nombreNuevo);
@@ -503,7 +514,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_1.add(dateChooser);
 		
 		label_fecha = new JLabel("");
-		label_fecha.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/grafica/imagenes/Error.png")));
+		label_fecha.setIcon(new ImageIcon(MantenimientoProveedor.class.getResource("/resources/Error.png")));
 		label_fecha.setBounds(233, 217, 20, 20);
 		panel_1.add(label_fecha);
 		label_fecha.setVisible(false);
@@ -545,7 +556,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		comboBoxServicios = new JComboBox();
 		comboBoxServicios.setBounds(12, 31, 202, 24);
 		panel_3.add(comboBoxServicios);
-		
+						
 		ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
 		List<String> lstServicios = controlador.listarServicio();
 		
@@ -667,21 +678,99 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_4.add(button_1);
 		
 		JButton btnNewButton_2 = new JButton("Reporte de Proveedores");
-		btnNewButton_2.setBounds(12, 581, 207, 25);
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Map parametros = new HashMap();				
+				JasperPrint print;
+				
+				try {
+					print = JasperFillManager.fillReport("reportes//jasper//proveedores.jasper", parametros,new JRBeanCollectionDataSource(getTuplasListaProveedores()));
+					JasperExportManager.exportReportToPdfFile(print, "reportes//pdf/proveedores.pdf");
+					JasperViewer.viewReport(print,false);				
+				} catch (JRException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
+		btnNewButton_2.setBounds(45, 581, 207, 25);
 		getContentPane().add(btnNewButton_2);
 		
 		JButton btnReporteDeMateriales = new JButton("Reporte de Materiales");
-		btnReporteDeMateriales.setBounds(266, 581, 207, 25);
+		btnReporteDeMateriales.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent e) {
+				String nombre = listaProveedores.getSelectedValue();
+				String direccion = textFieldDireccionEnvio.getText();
+				String email =textFieldEmail.getText();
+				String tel = textFieldTelefono.getText();				
+											
+				if (nombre == null) {
+					JOptionPane.showMessageDialog(getContentPane(), "Seleccione un proveedor de la lista.", "Proveedor no seleccionado.", JOptionPane.PLAIN_MESSAGE);
+				}else {
+					int anio = dateChooser.getCalendar().get(Calendar.YEAR);
+					int mes = dateChooser.getCalendar().get(Calendar.MONTH) +1;
+					int dia = dateChooser.getCalendar().get(Calendar.DAY_OF_MONTH);
+					String fecha = dia + "/" + mes + "/" + anio ;
+					
+					Map parametros = new HashMap<String, String>();
+					parametros.put("nombre", nombre);
+					parametros.put("direccion", direccion);
+					parametros.put("email", email);
+					parametros.put("tel", tel);
+					parametros.put("fechaIngreso", fecha);
+					
+					ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
+					
+					String servicios ="";
+					List<String> lstServicios = controlador.obtenerListaServiciosProveedor(nombre);
+					for (int i=0; i<lstServicios.size(); i++) {
+						servicios = servicios + lstServicios.get(i);
+						if (i < lstServicios.size() -1) {
+							servicios = servicios + ", ";
+						}else
+							servicios = servicios + ".";
+					}
+					
+					parametros.put("servicios", servicios);
+					
+					String materiales ="";
+					List<String> lstMateriales = controlador.obtenerListaMaterialesProveedor(nombre);
+					for (int i=0; i<lstMateriales.size(); i++) {
+						materiales = materiales + lstMateriales.get(i);
+						if (i < lstMateriales.size() -1) {
+							materiales = materiales + ", ";
+						}else
+							materiales = materiales + ".";
+					}
+					
+					parametros.put("materiales", materiales);
+					
+					JasperPrint print;
+					try {
+						print = JasperFillManager.fillReport("reportes//jasper//materiales.jasper", parametros,new JREmptyDataSource());
+						JasperExportManager.exportReportToPdfFile(print, "reportes//pdf/materiales.pdf");
+						JasperViewer.viewReport(print,false);				
+					} catch (JRException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		btnReporteDeMateriales.setBounds(285, 581, 207, 25);
 		getContentPane().add(btnReporteDeMateriales);
 		
 		JButton btnSalir = new JButton("Salir");
-		btnSalir.setBounds(668, 581, 117, 25);
-		getContentPane().add(btnSalir);
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MantenimientoProveedor.this.dispose();
 			}
 		});
+		btnSalir.setBounds(624, 581, 117, 25);
+		getContentPane().add(btnSalir);
 		
 	}
 	
@@ -756,6 +845,17 @@ public class MantenimientoProveedor extends JInternalFrame {
 		}
 		listaMateriales.setModel(modelo);
 		
+	}
+	
+	public List<VOProveedor> getTuplasListaProveedores(){
+		List<VOProveedor> tuplas = new ArrayList<VOProveedor>();
+		ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
+		List<String> listaNombresProveedores = controlador.listarProveedores();
+		for (int i=0; i<listaNombresProveedores.size(); i++) {
+			VOProveedor provedor = controlador.obtenerDatosProveedor(listaNombresProveedores.get(i));
+			tuplas.add(provedor);
+		}		
+		return tuplas;
 	}
 	
 	

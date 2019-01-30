@@ -3,9 +3,12 @@ package logica;
 import java.util.List;
 
 import valueObjects.VOCliente;
+import valueObjects.VODetalleProveedor;
+import valueObjects.VODetallesProducto;
 import valueObjects.VOMaterial;
 import valueObjects.VOProveedor;
 import valueObjects.VOServicio;
+import valueObjects.VOVentas;
 
 public interface IFachada {
 
@@ -66,6 +69,18 @@ public interface IFachada {
 	boolean existeMaterialProveedor(String proveedor, String material);
 
 	int eliminarMaterialProveedor(String proveedor, String material);
+
+	List<VOVentas> listarTuplasVentas(String fechaInicio, String fechaFin);
+
+	String formatearFecha(String fecha);
+
+	List<String> listarClientesRangoFechaProduccion(String fechaInicio, String fechaFin);
+
+	String obtenerTipoCliente(String nombreCliente);
+
+	VODetallesProducto obtenerDetallesProducto(String cotizacion);
+
+	List<VODetalleProveedor> obtenerListaProveedores(String cotizacion);
 
 	
 }
