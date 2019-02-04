@@ -35,7 +35,7 @@
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="550" height="96" uuid="0b73372d-bf4d-462d-8cab-b56c69b36acd"/>
-				<imageExpression><![CDATA["src/main/java/grafica/imagenes/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["./reportes/jasper/logo.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="110" width="130" height="16" uuid="e2e1dcd5-6281-49c8-bc62-22f4f2a2c41b"/>

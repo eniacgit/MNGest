@@ -90,7 +90,7 @@ public class ReportePagosProveedores extends JInternalFrame {
 	 */
 	public ReportePagosProveedores() {
 		setClosable(true);
-		setTitle("Reporte de Ventas");
+		setTitle("Reporte de pago a proveedores");
 		setBounds(100, 100, 950, 512);
 		getContentPane().setLayout(null);
 		

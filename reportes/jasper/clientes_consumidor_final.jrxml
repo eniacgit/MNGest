@@ -24,7 +24,7 @@
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="802" height="96" uuid="0b73372d-bf4d-462d-8cab-b56c69b36acd"/>
-				<imageExpression><![CDATA["src/main/java/grafica/imagenes/logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["./reportes/jasper/logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
