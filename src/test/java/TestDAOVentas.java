@@ -1,15 +1,15 @@
 import java.util.List;
 
-import persistencia.DAOVentas;
-import valueObjects.VOVentas;
+import persistencia.DAOVenta;
+import valueObjects.VOVenta;
 
 public class TestDAOVentas {
 
 	public static void main(String[] args) {
-		DAOVentas dao = new DAOVentas();
-		VOVentas venta = new VOVentas();
+		DAOVenta dao = new DAOVenta();
+		VOVenta venta = new VOVenta();
 		
-		List<VOVentas> lista = dao.listarTuplasVentas("2019-01-01","2019-01-31");
+		List<VOVenta> lista = dao.listarTuplasVentas("2019-01-01","2019-01-31");
 		
 		for (int i=0; i < lista.size(); i++) {
 			System.out.println(lista.get(i).getorden());

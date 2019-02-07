@@ -27,7 +27,7 @@ import valueObjects.VOCliente;
 import valueObjects.VODetalleProveedor;
 import valueObjects.VODetallesProducto;
 import valueObjects.VOTablaProveedores;
-import valueObjects.VOVentas;
+import valueObjects.VOVenta;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;

@@ -7,20 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import valueObjects.VOVentas;
+import valueObjects.VOVenta;
 
-public class DAOVentas {
+public class DAOVenta {
 	
-	public List<VOVentas> listarTuplasVentas(String fechaInicio, String fechaFin){
-		VOVentas ventas = null;
-		List<VOVentas> tuplas = null;
+	public List<VOVenta> listarTuplasVentas(String fechaInicio, String fechaFin){
+		VOVenta ventas = null;
+		List<VOVenta> tuplas = null;
 		AccesoBD accesoBD = new AccesoBD();		
 		Connection con = accesoBD.conectarBD();
 		Consultas consultas = new Consultas();
 		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		tuplas = new ArrayList<VOVentas>();		
+		tuplas = new ArrayList<VOVenta>();		
 		
 		try {
 			String listar = consultas.listarTuplasVentas();
@@ -29,7 +29,7 @@ public class DAOVentas {
 			pstmt.setString(2, fechaFin);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
-				ventas = new VOVentas();
+				ventas = new VOVenta();
 				ventas.setorden(rs.getString("p.cotizacion"));
 				ventas.setnombreCliente(rs.getString("c.nombre"));
 				ventas.setTipoCliente(rs.getString("c.tipo"));

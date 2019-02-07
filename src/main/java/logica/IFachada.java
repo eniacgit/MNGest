@@ -2,18 +2,23 @@ package logica;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import valueObjects.VOCliente;
 import valueObjects.VODetalleProveedor;
 import valueObjects.VODetallesProducto;
+import valueObjects.VOEmail;
 import valueObjects.VOMaterial;
 import valueObjects.VOProveedor;
 import valueObjects.VOServicio;
-import valueObjects.VOVentas;
+import valueObjects.VOVenta;
 
 public interface IFachada {
 
 	List<String> listarClientes();
 
+	// Dado el nombre de un cliente, retorna todos sus datos en un value object
+	// Pre: el cliente existe
 	VOCliente obtenerDatosCliente(String nombre);
 
 	int insertarCliente(VOCliente cliente);
@@ -70,8 +75,9 @@ public interface IFachada {
 
 	int eliminarMaterialProveedor(String proveedor, String material);
 
-	List<VOVentas> listarTuplasVentas(String fechaInicio, String fechaFin);
+	List<VOVenta> listarTuplasVentas(String fechaInicio, String fechaFin);
 
+	// Convierte una fecha con formato 'yyyy-MM-dd' al formato 'dd/MM/yyyy'
 	String formatearFecha(String fecha);
 
 	List<String> listarClientesRangoFechaProduccion(String fechaInicio, String fechaFin);
@@ -81,6 +87,19 @@ public interface IFachada {
 	VODetallesProducto obtenerDetallesProducto(String cotizacion);
 
 	List<VODetalleProveedor> obtenerListaProveedores(String cotizacion);
+
+	// Retorna una lista de todos los clientes (segun su tipo) que hicieron compras entre 2 fechas dadas
+	List<String> listaClientesFechaEntrega(String fechaInicio, String fechaFin, String tipoCliente);
+
+	// Retorna el correo electronico que se utiliza como remitente
+	String obtenerRemitente();
+
+	// A partir del nombre del cliente y un rango de fechas retorna la lista de productos que compro
+	List<VOVenta> listarTuplasVentas(String fechaInicio, String fechaFin, String nombreCliente);
+
+	// Envia correo electronico de gmail con archivos adjuntos, 
+	// a partir de un remitente, destinatario, asunto y cuerpo de msj
+	void enviarConGmail(VOEmail voEmail) throws MessagingException;
 
 	
 }

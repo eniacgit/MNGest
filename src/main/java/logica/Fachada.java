@@ -2,21 +2,40 @@ package logica;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
+import persistencia.AccesoBD;
+import persistencia.DAOCorreoPosVenta;
 import persistencia.DAOMantenimientoClientes;
 import persistencia.DAOMantenimientoMaterial;
 import persistencia.DAOMantenimientoProveedor;
 import persistencia.DAOMantenimientoServicio;
 import persistencia.DAOPagoProveedores;
-import persistencia.DAOVentas;
+import persistencia.DAOVenta;
+import valueObjects.VOArchivoAdjunto;
 import valueObjects.VOCliente;
 import valueObjects.VODetalleProveedor;
 import valueObjects.VODetallesProducto;
 import valueObjects.VOMaterial;
 import valueObjects.VOProveedor;
 import valueObjects.VOServicio;
-import valueObjects.VOVentas;
+import valueObjects.VOVenta;
+import valueObjects.VOEmail;
 
 public class Fachada implements IFachada{
 
@@ -185,8 +204,8 @@ public class Fachada implements IFachada{
 	}
 	
 	// VENTAS
-	public List<VOVentas> listarTuplasVentas(String fechaInicio, String fechaFin){
-		DAOVentas dao = new DAOVentas();
+	public List<VOVenta> listarTuplasVentas(String fechaInicio, String fechaFin){
+		DAOVenta dao = new DAOVenta();
 		return dao.listarTuplasVentas(fechaInicio,fechaFin);
 	}
 	
@@ -224,4 +243,83 @@ public class Fachada implements IFachada{
 		DAOPagoProveedores dao = new DAOPagoProveedores();
 		return dao.obtenerListaProveedores(cotizacion);
 	}
+	
+	public List<String> listaClientesFechaEntrega(String fechaInicio, String fechaFin, String tipoCliente){
+		DAOCorreoPosVenta dao = new DAOCorreoPosVenta();
+		return dao.listaClientesFechaEntrega(fechaInicio, fechaFin, tipoCliente);
+	}
+	
+	public String obtenerRemitente() {
+		DAOCorreoPosVenta dao = new DAOCorreoPosVenta();
+		return dao.obtenerRemitente();
+	}
+	
+	
+	// A partir del nombre del cliente y un rango de fechas retorna la lista de productos que compro
+	public List<VOVenta> listarTuplasVentas(String fechaInicio, String fechaFin, String nombreCliente){
+		DAOCorreoPosVenta dao = new DAOCorreoPosVenta();
+		return dao.listarTuplasVentas(fechaInicio, fechaFin, nombreCliente);
+	}
+	
+	private static void addAtachment(Multipart multipart, String rutaArcvhivo, String nombreArchivo) throws MessagingException {
+		DataSource source = new FileDataSource(rutaArcvhivo+nombreArchivo);
+		BodyPart messageBodyPart = new MimeBodyPart();
+		messageBodyPart.setDataHandler(new DataHandler(source));
+		messageBodyPart.setFileName(nombreArchivo);
+		multipart.addBodyPart(messageBodyPart);
+	}
+	
+	public void enviarConGmail (VOEmail voEmail) throws MessagingException {
+		// Envia un correo electronico con archivos adjuntos (ArrayList) utilizando el email y contrasenia
+		// almacenados en la tabla mn_email
+			//String remitente = voEmail.getRemitente(); // este campo viene vacio
+			String destinatario = voEmail.getDestinatario();
+			String asunto = voEmail.getAsunto();
+			String cuerpo = voEmail.getCuerpo();
+			ArrayList<VOArchivoAdjunto> lstArchivosAdjuntos = voEmail.getLstArchivosAdjuntos();
+			
+			AccesoBD accesoBD = new AccesoBD();
+			String email = obtenerRemitente();
+			String [] arrayEmail = email.split("@");
+			String remitente = arrayEmail[0];
+			String clave = accesoBD.obtenerPasswordRemitente();			
+			
+			// Se obtiene el objeto Session. La configuración es para una cuenta de gmail
+			Properties props = new Properties();		
+			props.put("mail.smtp.host", "smtp.gmail.com");
+			props.put("mail.smtp.user", "remitente");
+			props.put("mail.smtp.clave", clave);
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			props.put("mail.smtp.port", "587");
+			
+			Session session = Session.getDefaultInstance(props);
+			MimeMessage message = new MimeMessage(session);
+			message.addRecipients(Message.RecipientType.TO, destinatario);
+			message.setSubject(asunto);
+			
+			BodyPart messageBodyPart = new MimeBodyPart();
+			messageBodyPart.setText(cuerpo);
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(messageBodyPart);
+			messageBodyPart = new MimeBodyPart();
+			
+			
+			if (lstArchivosAdjuntos !=null ) {
+				// obtengo archivos adjuntos de la lista
+				for (int i=0; i<lstArchivosAdjuntos.size();i++) {
+					String rutaArchivo = lstArchivosAdjuntos.get(i).getRutaArchivoAdjunto();
+					String nombreArchivo = lstArchivosAdjuntos.get(i).getNombreArchivoAdjunto();
+					addAtachment(multipart, rutaArchivo, nombreArchivo);
+				}
+			}
+			message.setContent(multipart);
+			
+			Transport transport = session.getTransport("smtp");
+			transport.connect("smtp.gmail.com", remitente, clave);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();		
+		}
+	
+	
 }

@@ -21,7 +21,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 import valueObjects.VOCliente;
-import valueObjects.VOVentas;
+import valueObjects.VOVenta;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -173,11 +173,11 @@ public class ReporteVentas extends JInternalFrame {
 					}else {
 						ControladorVentas controlador = new ControladorVentas();
 						
-						List<VOVentas> listaVentas = controlador.listarTuplasVentas(fechaInicio, fechaFin);
+						List<VOVenta> listaVentas = controlador.listarTuplasVentas(fechaInicio, fechaFin);
 						if (listaVentas.size()>0) {
-							Iterator<VOVentas> iterVentas = listaVentas.iterator();
+							Iterator<VOVenta> iterVentas = listaVentas.iterator();
 							while (iterVentas.hasNext()) {
-								VOVentas venta = iterVentas.next();
+								VOVenta venta = iterVentas.next();
 								Object[] fila = new Object[10];
 								fila[0] = venta.getorden();
 								fila[1] = venta.getnombreCliente();
@@ -255,10 +255,10 @@ public class ReporteVentas extends JInternalFrame {
 	
 	
 	
-	List<VOVentas> getTuplasTablaVentas(){
-		List<VOVentas> tuplas = new ArrayList<VOVentas>();		
+	List<VOVenta> getTuplasTablaVentas(){
+		List<VOVenta> tuplas = new ArrayList<VOVenta>();		
 		for (int i=0; i< tablaVentas.getRowCount(); i++) {
-			VOVentas venta = new VOVentas();
+			VOVenta venta = new VOVenta();
 			venta.setorden((String) tablaVentas.getValueAt(i, 0));
 			venta.setnombreCliente((String) tablaVentas.getValueAt(i, 1));
 			venta.setTipoCliente((String) tablaVentas.getValueAt(i,2));

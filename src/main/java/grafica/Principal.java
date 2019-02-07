@@ -28,6 +28,7 @@ public class Principal extends JFrame {
 	private MantenimientoProveedor mantenimientoProveedor;
 	private ReporteVentas reporteVentas;
 	private ReportePagosProveedores reportePagosProveedores;
+	private CorreoPosventa correoPosventa;
 
 	/**
 	 * Launch the application.
@@ -76,6 +77,13 @@ public class Principal extends JFrame {
 		menuBar.add(mnSistema);
 		
 		JMenuItem mntmCerrarSesin = new JMenuItem("Cerrar sesión");
+		mntmCerrarSesin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PantallaLogin plogin = new PantallaLogin();
+				plogin.setVisible(true);
+				Principal.this.dispose();
+			}
+		});
 		mnSistema.add(mntmCerrarSesin);
 		
 		JMenuItem mntmSalir = new JMenuItem("Salir");
@@ -174,6 +182,18 @@ public class Principal extends JFrame {
 			}
 		});
 		mnNewMenu.add(mntmReporteDePagos_1);
+		
+		JMenuItem mntmCorreoPosve = new JMenuItem("Correo Posventa");
+		mntmCorreoPosve.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!(correoPosventa instanceof CorreoPosventa)) {
+					correoPosventa = new CorreoPosventa();
+				}
+				centrarVentanaInterna(correoPosventa);
+				
+			}
+		});
+		mnNewMenu.add(mntmCorreoPosve);
 		
 		desktopPane = new JDesktopPane();
 		//desktopPane.setBounds(0, 26, 394, 244);

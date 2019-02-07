@@ -3,10 +3,12 @@ package persistencia;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.jfree.util.Log;
+
 
 public class AccesoBD {
 	private String driver;
@@ -45,9 +47,32 @@ public class AccesoBD {
 			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			Log.error(e);
 			System.out.println(">> ERROR 3");
 			e.printStackTrace();
 		}
+	}
+	
+	public String obtenerPasswordRemitente() {
+		// Retorna el password del remitente con el que se enviarán los presupuestos 
+		// Precondicion: en la tabla mn_email solo existe una tupla con id=1
+		int id = 1;
+		String password="";
+		Connection con = this.conectarBD();
+		Consultas consultas = new Consultas();
+		String select = consultas.obtenerPasswordRemitente();
+		try {
+			PreparedStatement pstmt = con.prepareStatement(select);
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			password = rs.getString(1);
+			rs.close();
+			pstmt.close();			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.desconectarBD(con);
+		return password;
 	}
 }

@@ -217,4 +217,46 @@ public class Consultas {
 				"WHERE p.cotizacion = ?;";
 		return consulta;
 	}
+	
+	public String obtenerListaProductosVenta() {
+		String consulta ="SELECT pmn.fechaEntrega AS fecha, p.nombre AS producto, c.nombre AS categoria, pres.unidades AS unidades, pres.costo AS total\n" + 
+				"FROM mn_producto p\n" + 
+				"INNER JOIN mn_categoria c ON c.idCategoria = p.idCategoria\n" + 
+				"INNER JOIN mn_cliente_presupuesto cp ON cp.idPresupuesto = p.idPresupuesto\n" + 
+				"INNER JOIN mn_productoMN pmn ON pmn.idClientePresupuesto = cp.idClientePresupuesto\n" + 
+				"INNER JOIN mn_presupuesto pres ON pres.idPresupuesto = cp.idPresupuesto\n" + 
+				"INNER JOIN mn_cliente cli ON cli.idCliente = cp.idCliente\n" + 
+				"WHERE cp.estado=4 AND cli.nombre = ? AND pmn.fechaEntrega BETWEEN ? AND ?;";
+		return consulta;
+	}
+	
+	public String listaClientesFechaEntrega() {
+		String consulta ="SELECT c.nombre\n" + 
+				"FROM mn_cliente c\n" + 
+				"INNER JOIN mn_cliente_presupuesto cp ON cp.idCliente= c.idCliente\n" + 
+				"INNER JOIN mn_productoMN pmn ON pmn.idClientePresupuesto = cp.idClientePresupuesto\n" + 
+				"WHERE cp.estado=4 AND c.tipo = ? AND pmn.fechaEntrega BETWEEN ? AND ?;";
+		return consulta;
+	}
+	
+	public String obtenerRemitente() {
+		String consulta ="select email from mn_email where id=?;";
+		return consulta;
+	}
+	
+	public String obtenerPasswordRemitente() {
+		String consulta ="select password from mn_email where id=?;";
+		return consulta;
+	}
+	
+	public String obtenerPassWordSHA512() {
+		String consulta ="SELECT PWD_ FROM ACT_ID_USER WHERE ID_= ?;";
+		return consulta;
+	}
+	
+	public String existeUsuarioLogin() {
+		String consulta ="SELECT * FROM ACT_ID_USER WHERE ID_= ?";
+		return consulta;
+	}
+	
 }

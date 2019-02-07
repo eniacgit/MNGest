@@ -1,6 +1,6 @@
 package valueObjects;
 
-public class VOVentas {
+public class VOVenta {
 	private String orden;
 	private String nombreCliente;
 	private String tipoCliente;
@@ -11,12 +11,26 @@ public class VOVentas {
 	private String total;
 	private String fechaProduccion;	               
 	private String fechaEntrega;
+	private int unidades;
 	
-	public VOVentas() {
+	public VOVenta() {
 		super();
 	}
+	
+	
+	public VOVenta(String nombreProducto, String categoria, String total, String fechaEntrega, int unidades) {
+		super();
+		this.nombreProducto = nombreProducto;
+		this.categoria = categoria;
+		this.total = total;
+		this.fechaEntrega = fechaEntrega;
+		this.unidades = unidades;
+	}
 
-	public VOVentas(String orden, String nombreCliente, String tipoCliente, String nombreProducto, String categoria,
+
+
+
+	public VOVenta(String orden, String nombreCliente, String tipoCliente, String nombreProducto, String categoria,
 			String cantidad, String moneda, String total, String fechaProduccion, String fechaEntrega) {
 		super();
 		this.orden = orden;
@@ -109,5 +123,47 @@ public class VOVentas {
 
 	public void setFechaEntrega(String fechaEntrega) {
 		this.fechaEntrega = fechaEntrega;
-	}		
+	}
+
+
+	public String getOrden() {
+		return orden;
+	}
+
+
+	public void setOrden(String orden) {
+		this.orden = orden;
+	}
+
+
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+
+
+	public String getFechaProduccion() {
+		return fechaProduccion;
+	}
+
+
+	public void setFechaProduccion(String fechaProduccion) {
+		this.fechaProduccion = fechaProduccion;
+	}
+
+
+	public int getUnidades() {
+		return unidades;
+	}
+
+
+	public void setUnidades(int unidades) {
+		this.unidades = unidades;
+	}
+	
+	
 }
