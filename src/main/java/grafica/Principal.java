@@ -139,6 +139,7 @@ public class Principal extends JFrame {
 				
 				if (!(mantenimientoProveedor instanceof MantenimientoProveedor)) {
 					mantenimientoProveedor = new MantenimientoProveedor();
+					repaint();
 				}
 				centrarVentanaInterna(mantenimientoProveedor);
 			}

@@ -240,6 +240,7 @@ public class ReportePagosProveedores extends JInternalFrame {
 					
 					List<VODetalleProveedor> listaProveedores = controlador.obtenerListaProveedores(orden);
 					if (listaProveedores.size() >0) {
+						modeloTabla.setRowCount(0); // limpio la tabla
 						Iterator<VODetalleProveedor> iterProveedores = listaProveedores.iterator();
 						while (iterProveedores.hasNext()) {
 							VODetalleProveedor proveedor = iterProveedores.next();
@@ -431,6 +432,7 @@ public class ReportePagosProveedores extends JInternalFrame {
 		return esMayor;
 	}
 	
+	// retorna una lista de clientes comprendidos entre 2 fechas
 	private void listarClientes(String fechaInicio, String fechaFin) {
 		DefaultListModel<String> modelo = new DefaultListModel<String>();
 		ControladorPagoProveedores controlador = new ControladorPagoProveedores();

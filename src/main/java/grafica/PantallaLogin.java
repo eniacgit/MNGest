@@ -139,6 +139,7 @@ public class PantallaLogin extends JFrame {
 	
 	
 // FUNCIONES AUXILIARES	
+	// retorna true si el password ingresado es correcto
 	private static boolean esPasswordCorrecto(char[] input) {
 	    boolean isCorrect = true;
 	    char[] correctPassword = { 'a', 'd', 'm', 'i', 'n'};

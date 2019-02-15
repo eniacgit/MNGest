@@ -270,7 +270,7 @@ public class MantenimientoMaterial extends JInternalFrame {
 		return tuplas;
 	}
 	
-	
+	// retorna un modelo con la lista de materiales
 	public void listarMateriales() {
 		DefaultListModel<String> modelo = new DefaultListModel<String>();
 		ControladorMantenimientoMaterial controlador = new ControladorMantenimientoMaterial();

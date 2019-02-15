@@ -2,6 +2,7 @@ package grafica;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.ScrollPane;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -9,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import com.lowagie.text.Font;
 import com.toedter.calendar.JDateChooser;
@@ -46,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.border.TitledBorder;
 import java.awt.SystemColor;
 import javax.swing.JPanel;
@@ -62,6 +66,7 @@ import javax.swing.JFileChooser;
 import javax.mail.MessagingException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextArea;
+import javax.swing.JFrame;
 
 public class CorreoPosventa extends JInternalFrame {
 	private JTable tablaProductos;
@@ -106,18 +111,8 @@ public class CorreoPosventa extends JInternalFrame {
 	public CorreoPosventa() {
 		setClosable(true);
 		setTitle("Correo Posventa");
-		setBounds(100, 100, 950, 650);
+		setBounds(100, 100, 1024, 650);
 		getContentPane().setLayout(null);
-		
-		// COLUMNAS DE LA TABLA VENTAS
-		modeloTabla = new DefaultTableModel();
-		
-		
-		modeloTabla.addColumn("Fecha entrega");
-		modeloTabla.addColumn("Producto");
-		modeloTabla.addColumn("Categoría");
-		modeloTabla.addColumn("Unidades");
-		modeloTabla.addColumn("Total (USD)");
 		
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
@@ -232,15 +227,16 @@ public class CorreoPosventa extends JInternalFrame {
 					List<VOVenta> listaVentas = controlador.listarTuplasVentas(fechaInicio, fechaFin, nombreCliente);
 					
 					if (listaVentas.size()>0) {
+						modeloTabla.setRowCount(0); // limpio la tabla
 						Iterator<VOVenta> iterVentas = listaVentas.iterator();
 						while (iterVentas.hasNext()) {
 							VOVenta venta = iterVentas.next();
 							Object[] fila = new Object[5];
 							fila[0] = controlador.formatearFecha(venta.getFechaEntrega());
 							fila[1] = venta.getNombreProducto();
-							fila[2] = venta.getCategoria();							
-							fila[3] = venta.getUnidades();
-							fila[4] = venta.getTotal();							
+							fila[2] = venta.getCategoria();
+							fila[3] = venta.getTotal();
+							fila[4] = venta.getUnidades();														
 							modeloTabla.addRow(fila);
 						}
 						
@@ -256,19 +252,36 @@ public class CorreoPosventa extends JInternalFrame {
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Productos adquiridos por el cliente", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_3.setBounds(339, 23, 589, 257);
+		panel_3.setBounds(339, 23, 663, 257);
 		getContentPane().add(panel_3);
 		panel_3.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 124, 565, 121);
+		scrollPane.setBounds(12, 124, 639, 121);
 		panel_3.add(scrollPane);
 		
 	
+		// COLUMNAS DE LA TABLA VENTAS
+		modeloTabla = new DefaultTableModel();
+				
+		modeloTabla.addColumn("Fecha entrega");
+		modeloTabla.addColumn("Producto");
+		modeloTabla.addColumn("Categoría");
+		modeloTabla.addColumn("Unidades");
+		modeloTabla.addColumn("Total (USD)");
 		
+				
 		tablaProductos = new JTable(modeloTabla);
 		tablaProductos.setFont(new java.awt.Font("Dialog", java.awt.Font.PLAIN, 12));
 		scrollPane.setViewportView(tablaProductos);
+		
+		
+		// Ancho de las columnas
+		setAnchoColumnas(tablaProductos);
+		
+		
+		
+		
 		
 		JLabel label = new JLabel("Cliente");
 		label.setBounds(12, 32, 238, 15);
@@ -285,7 +298,7 @@ public class CorreoPosventa extends JInternalFrame {
 		textFieldTipoCliente.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldTipoCliente.setEditable(false);
 		textFieldTipoCliente.setColumns(10);
-		textFieldTipoCliente.setBounds(278, 51, 149, 25);
+		textFieldTipoCliente.setBounds(314, 51, 149, 25);
 		panel_3.add(textFieldTipoCliente);
 		
 		JLabel label_1 = new JLabel("Tipo de Cliente");
@@ -293,14 +306,14 @@ public class CorreoPosventa extends JInternalFrame {
 		panel_3.add(label_1);
 		
 		JLabel lblTelcel = new JLabel("Tel/Cel");
-		lblTelcel.setBounds(449, 32, 128, 15);
+		lblTelcel.setBounds(487, 32, 128, 15);
 		panel_3.add(lblTelcel);
 		
 		textFieldTel = new JTextField();
 		textFieldTel.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldTel.setEditable(false);
 		textFieldTel.setColumns(10);
-		textFieldTel.setBounds(449, 51, 128, 25);
+		textFieldTel.setBounds(487, 51, 164, 25);
 		panel_3.add(textFieldTel);
 		
 		JLabel lblProductosAdquiridos = new JLabel("Productos adquiridos");
@@ -309,7 +322,7 @@ public class CorreoPosventa extends JInternalFrame {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Correo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(339, 292, 589, 314);
+		panel_2.setBounds(339, 292, 663, 314);
 		getContentPane().add(panel_2);
 		panel_2.setLayout(null);
 		
@@ -326,20 +339,20 @@ public class CorreoPosventa extends JInternalFrame {
 		panel_2.add(lblAsunto);
 		
 		textFieldAsunto = new JTextField();
-		textFieldAsunto.setBounds(88, 77, 343, 25);
+		textFieldAsunto.setBounds(88, 77, 407, 25);
 		panel_2.add(textFieldAsunto);
 		textFieldAsunto.setColumns(10);
 		
 		textFieldPara = new JTextField();
 		textFieldPara.setEditable(false);
 		textFieldPara.setColumns(10);
-		textFieldPara.setBounds(88, 50, 343, 25);
+		textFieldPara.setBounds(88, 50, 407, 25);
 		panel_2.add(textFieldPara);
 		
 		textFieldDe = new JTextField();
 		textFieldDe.setEditable(false);
 		textFieldDe.setColumns(10);
-		textFieldDe.setBounds(88, 23, 343, 25);
+		textFieldDe.setBounds(88, 23, 407, 25);
 		panel_2.add(textFieldDe);
 		
 		JButton btnNewButton_1 = new JButton("Enviar");
@@ -386,11 +399,11 @@ public class CorreoPosventa extends JInternalFrame {
 				}
 			}
 		});
-		btnNewButton_1.setBounds(449, 25, 117, 101);
+		btnNewButton_1.setBounds(521, 28, 130, 101);
 		panel_2.add(btnNewButton_1);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(12, 147, 565, 155);
+		scrollPane_2.setBounds(12, 147, 639, 155);
 		panel_2.add(scrollPane_2);
 		
 		textAreaCuerpo = new JTextArea();
@@ -438,13 +451,14 @@ public class CorreoPosventa extends JInternalFrame {
 		textFieldArchivo = new JTextField();
 		textFieldArchivo.setEditable(false);
 		textFieldArchivo.setColumns(10);
-		textFieldArchivo.setBounds(174, 110, 257, 25);
+		textFieldArchivo.setBounds(174, 110, 321, 25);
 		panel_2.add(textFieldArchivo);
 
 	}
 	
 	/// METODOS AUXILIARES ////////////////////////////////////////////////////////////////////////////////
 	
+	// retorna true si una fecha dada tiene el formato dd/MM/yyyy
 	private boolean esValidaFecha(String fecha) {
         try {
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -488,6 +502,8 @@ public class CorreoPosventa extends JInternalFrame {
 		return esMayor;
 	}
 	
+	//retorna un modelo de datos tieniendo en cuenta 2 fechas y el tipo de cliente
+	// para luego insertarlo en la correspondiente jList
 	private void listarClientes(String fechaInicio, String fechaFin, String tipoCliente) {
 		DefaultListModel<String> modelo = new DefaultListModel<String>();
 		ControladorCorreoPosVenta controlador = new ControladorCorreoPosVenta();
@@ -501,4 +517,33 @@ public class CorreoPosventa extends JInternalFrame {
 		}
 		listaClientes.setModel(modelo);
 	}
+	
+	// Ajusta el ancho de las columnas de la tabla
+	public void setAnchoColumnas(JTable tbLista){        
+        //JViewport scroll =  (JViewport) tbLista.getParent(); 
+        int ancho = 639; // ancho del jScrollPane 
+                
+        int anchoColumna=0; 
+        TableColumnModel modeloColumna = tbLista.getColumnModel(); 
+        TableColumn columnaTabla; 
+        for (int i = 0; i < tbLista.getColumnCount(); i++) { 
+            columnaTabla = modeloColumna.getColumn(i); 
+            switch(i){ 
+                case 0: anchoColumna = (20*ancho)/100; 
+                        break; 
+                case 1: anchoColumna = (35*ancho)/100; 
+                        break; 
+                case 2: anchoColumna = (15*ancho)/100; 
+                        break; 
+                case 3: anchoColumna = (15*ancho)/100; 
+                		break;
+                case 4: anchoColumna = (15*ancho)/100; 
+                		break;
+            }                      
+            columnaTabla.setPreferredWidth(anchoColumna);            
+        } 
+    } 
+	
+	
+	
 }

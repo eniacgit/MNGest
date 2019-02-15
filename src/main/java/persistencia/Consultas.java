@@ -231,7 +231,7 @@ public class Consultas {
 	}
 	
 	public String listaClientesFechaEntrega() {
-		String consulta ="SELECT c.nombre\n" + 
+		String consulta ="SELECT DISTINCT(c.nombre) AS nombre\n" +
 				"FROM mn_cliente c\n" + 
 				"INNER JOIN mn_cliente_presupuesto cp ON cp.idCliente= c.idCliente\n" + 
 				"INNER JOIN mn_productoMN pmn ON pmn.idClientePresupuesto = cp.idClientePresupuesto\n" + 

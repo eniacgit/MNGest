@@ -674,11 +674,13 @@ public class MantenimientoCliente extends JInternalFrame {
 		return cadena.matches("^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@" + "[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,4})$");
 	}
 	
+	// returna true si un telefono tiene formato valido
 	public static boolean esValidoTelefono(String cadena) {
 		// Esta formado solo por números y cualquier cantidad de digitos
 		return cadena.matches("\\d*");
 	}
 	
+	// retorna true si un numero de rut es valido
 	public static boolean esValidoRUT (String cadena) {
 		// Tiene 12 digitos numericos en total
 		return cadena.matches("\\d{12}");

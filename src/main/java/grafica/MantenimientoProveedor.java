@@ -50,6 +50,8 @@ import javax.swing.JComboBox;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import javax.swing.JFrame;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class MantenimientoProveedor extends JInternalFrame {
 	private JTextField textFiltro;
@@ -115,6 +117,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		textFiltro.addKeyListener(new KeyAdapter() {
 			StringBuffer txt = new StringBuffer();
 			@Override
+			// Al presionar una tecla va filtrando los elementos del jList
 			public void keyTyped(KeyEvent e) {
 				char car = e.getKeyChar();
 				if (car == KeyEvent.VK_BACK_SPACE) {
@@ -554,10 +557,32 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_3.setLayout(null);
 		
 		comboBoxServicios = new JComboBox();
+		// Al hacer clic en el comboBox, el mismo actualiza sus ittems
+		comboBoxServicios.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
+				// Obtengo lista de servicios
+				List<String> lstServicios = controlador.listarServicio();
+				
+				if(lstServicios.size() > 0) {
+					// Elimino todos los items del comboBox
+					comboBoxServicios.removeAllItems();
+					Iterator<String> iterServicios = lstServicios.iterator();
+					// Recorro la lista y voy llenando el comboBox
+					while (iterServicios.hasNext()) {
+						String strServicicio = iterServicios.next();
+						comboBoxServicios.addItem(strServicicio);				
+					}
+				}
+				
+			}
+		});
 		comboBoxServicios.setBounds(12, 31, 202, 24);
 		panel_3.add(comboBoxServicios);
 						
-		ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
+		final ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
 		List<String> lstServicios = controlador.listarServicio();
 		
 		if(lstServicios.size() > 0) {
@@ -618,6 +643,23 @@ public class MantenimientoProveedor extends JInternalFrame {
 		panel_4.setLayout(null);
 		
 		comboBoxMateriales = new JComboBox();
+		comboBoxMateriales.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				
+				List<String> lstMateriales = controlador.listarMateriales();
+				
+				if(lstMateriales.size() > 0) {
+					comboBoxMateriales.removeAllItems();
+					Iterator<String> iterMateriales = lstMateriales.iterator();
+					while (iterMateriales.hasNext()) {
+						String strMaterial = iterMateriales.next();
+						comboBoxMateriales.addItem(strMaterial);				
+					}
+				}
+				
+			}
+		});
 		comboBoxMateriales.setBounds(12, 31, 202, 24);
 		panel_4.add(comboBoxMateriales);
 		
@@ -682,7 +724,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				Map parametros = new HashMap();				
 				JasperPrint print;
-				
+				// segenera reporte pdf a partir de una ruta dada y se almacena en la carpeta reportes
 				try {
 					print = JasperFillManager.fillReport("reportes//jasper//proveedores.jasper", parametros,new JRBeanCollectionDataSource(getTuplasListaProveedores()));
 					JasperExportManager.exportReportToPdfFile(print, "reportes//pdf/proveedores.pdf");
@@ -804,6 +846,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		}		
 	}
 	
+	// inserta en el model de la lista, todos los nombres de proveedores de la bd
 	public void listarProveedores() {
 		DefaultListModel<String> modelo = new DefaultListModel<String>();
 		ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
@@ -818,6 +861,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		listaProveedores.setModel(modelo);
 	}
 	
+	// inserta en el model de la lista, todos los nombres de servicios de la bd
 	public void listarServiciosProveedor(String proveedor) {
 		DefaultListModel<String> modelo = new DefaultListModel<String>();
 		ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
@@ -831,7 +875,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		}
 		listaServicios.setModel(modelo);		
 	}
-	
+	// inserta en el model de la lista, todos los nombres de materiales de la bd
 	public void listarMaterialesProveedor(String proveedor) {
 		DefaultListModel<String> modelo = new DefaultListModel<String>();
 		ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
@@ -846,7 +890,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		listaMateriales.setModel(modelo);
 		
 	}
-	
+	// obtiene las tuplas de ValueObjects que se mostraran en la tabla de proveedores
 	public List<VOProveedor> getTuplasListaProveedores(){
 		List<VOProveedor> tuplas = new ArrayList<VOProveedor>();
 		ControladorMantenimientoProveedor controlador = new ControladorMantenimientoProveedor();
@@ -860,12 +904,13 @@ public class MantenimientoProveedor extends JInternalFrame {
 	
 	
 	///// FUNCIONES DE VALIDACION ///////////////////////////////////////////////////////
-	
+	// Retorna true si un numero de celular es valido
 	public static boolean esValidoCelular (String cadena) {
 		// Comienza con cero y tiene 9 digitos numericos en total
 		return cadena.matches("^0\\d{8}");
 	}
 	
+	// retorna true si un email es valido
 	public static boolean esValidoEmail(String cadena) {
 		/*
 		   ^ especifica el inicio de la entrada.
@@ -896,6 +941,7 @@ public class MantenimientoProveedor extends JInternalFrame {
 		return validar.isValid(cadena);
 	}
 	
+	// retorna true si una fecha tiene el formato dd/MM/yyyy
 	public static boolean esValidaFecha(String fecha) {
         try {
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
