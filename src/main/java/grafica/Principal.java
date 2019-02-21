@@ -16,6 +16,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JDesktopPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 public class Principal extends JFrame {
 
@@ -29,6 +31,7 @@ public class Principal extends JFrame {
 	private ReporteVentas reporteVentas;
 	private ReportePagosProveedores reportePagosProveedores;
 	private CorreoPosventa correoPosventa;
+	private JLabel label_logo;
 
 	/**
 	 * Launch the application.
@@ -60,7 +63,7 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
-		setTitle("MNGest (C) 2019");
+		setTitle("MNRep(C) 2019");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -201,7 +204,19 @@ public class Principal extends JFrame {
 		desktopPane.setBounds(0, 26, (int) obtenerAnchoPantalla(), (int) obtenerAltoPantalla());
 		
 		contentPane.add(desktopPane);
+		
+		label_logo = new JLabel("");
+		label_logo.setIcon(new ImageIcon(Principal.class.getResource("/grafica/imagenes/logo.png")));
+		label_logo.setBounds(185, 51, 360, 256);
+		desktopPane.add(label_logo);
 		this.setExtendedState(MAXIMIZED_BOTH);
+		
+		// centrado del logo en fondo de pantalla principal
+		int xPos = (desktopPane.getWidth() -label_logo.getWidth()) / 2;
+		int yPos = (desktopPane.getHeight() - label_logo.getHeight()) /2;
+		label_logo.setLocation(xPos, yPos);
+		
+		
 	}
 	
 
